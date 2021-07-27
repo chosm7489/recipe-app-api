@@ -3,9 +3,11 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 
 class UserManager(BaseUserManager):
 
-# **extra_fields : add any additional fields
-    def create_user(self, email, password=None, **extra_fields ):
+        # **extra_fields : add any additional fields
+    def create_user(self, email, password=None, **extra_fields):
         #create and save a new USER
+        if not email:
+            raise ValueError("Users must have an email address")
         user = self.model(email=self.normalize_email(email), **extra_fields)
         # password is always encrypted, not stored in clear text
         user.set_password(password)
@@ -13,13 +15,22 @@ class UserManager(BaseUserManager):
 
         return user
 
-class User(AbstractBaseUser,PermissionsMixin):
+    def create_superuser(self, email, password):
+        #create and saves a new super user
+        user = self.create_user(email, password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using = self._db)
+
+        return user
+
+class User(AbstractBaseUser, PermissionsMixin):
     #Custom user model that supports using email instead of username
-    email = models.EmailField(max_length = 255, unique = True)
-    name = models.CharField(max_length=255)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default = False)
+    email = models.EmailField(max_length=255, unique=True)
+    name=models.CharField(max_length=255)
+    is_active=models.BooleanField(default=True)
+    is_staff=models.BooleanField(default=False)
 
-    objects = UserManager()
+    objects=UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD='email'
