@@ -1,4 +1,4 @@
-#build image using docker compose configuration 
+#build image using docker compose configuration
 
 version: "3"
 
@@ -13,3 +13,19 @@ services:
 #run the command(-c) using shell (sh)
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=app
+      - DB_USER=postgres
+      - DB_PASS=supersecretpassword
+    depends_on:
+      - db
+
+
+#Set up db server
+  db:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_DB=app
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=supersecretpassword
