@@ -23,7 +23,7 @@ RUN mkdir /app
 WORKDIR /app
 
 # copy the code to docker containers
-COPY ./app /app
+COPY ./app/ /app
 
 # create user that going to run our application
 # -D means only this user use this application
