@@ -1,5 +1,5 @@
 #test client to make test request
-from django.test import TestCase, Client
+from django.test import TestCase,Client
 from django.contrib.auth import get_user_model
 #generate URLs for django admin page
 from django.urls import reverse

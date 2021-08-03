@@ -21,7 +21,6 @@ services:
     depends_on:
       - db
 
-
 #Set up db server
   db:
     image: postgres:10-alpine
